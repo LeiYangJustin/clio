@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIO A Tour Guide Robot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header p {
+            font-size: 1.3em;
+            opacity: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        section {
+            background: white;
+            margin: 30px 0;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .abstract {
+            font-style: italic;
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+
+        .figure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .figure-item {
+            text-align: center;
+        }
+
+        .figure-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .figure-item img:hover {
+            transform: scale(1.03);
+        }
+
+        .figure-caption {
+            margin-top: 12px;
+            font-size: 0.95em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .video-item {
+            text-align: center;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-wrapper video,
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-caption {
+            margin-top: 12px;
+            font-size: 0.95em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .authors {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .authors span {
+            display: inline-block;
+            margin: 0 15px;
+            font-size: 1.1em;
+        }
+
+        .links {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            font-weight: 500;
+        }
+
+        .links a:hover {
+            background: #764ba2;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #2d3748;
+            color: white;
+            margin-top: 50px;
+        }
+
+        .placeholder {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f0f0f0 100%);
+            padding: 60px;
+            border-radius: 8px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            .figure-grid,
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CLIO: Coordinate User Visual Attention with Audio Narratives for Enhanced Engagement</h1>
+        <p>Short Paper at ACM/IEEE HRI Companion '26, Edinburgh, Scotland UK</p>
+    </header>
+
+    <div class="container">
+        <!-- Authors Section -->
+        <section>
+            <div class="authors">
+                <span>Yuxuan Chen<sup>*1</sup></span>
+                <span>Ian Leong Ting Lo<sup>*1</sup></span>
+                <span>Bao Guo<sup>1</sup></span>
+                <span>Netitorn Kawmali<sup>1</sup></span>
+                <span>Chun Kit Chan<sup>1</sup></span>
+                <span>Ruoyu Wang<sup>1</sup></span>
+                <span>Jia Pan<sup>2</sup></span>
+                <span><a href="https://leiyangjustin.github.io" target="_blank" style="color: inherit; text-decoration: none;">Lei Yang<sup>1</sup></a></span>
+            </div>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.95em; color: #666;">
+                <sup>1</sup>Tam Wing Fan Innovation Wing, The University of Hong Kong<br>
+                <sup>2</sup>School of Computing and Data Science, The University of Hong Kong
+            </p>
+            <p style="text-align: center; margin-top: 5px; font-size: 0.85em; color: #888;">
+                <sup>*</sup>Equal contribution
+            </p>
+            <div class="links">
+                <a href="https://arxiv.org/abs/2512.05389" target="_blank">Preprint</a>
+                <a href="https://doi.org/10.1145/3776734.3794565" target="_blank">Publisher's version</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Video Demonstrations</h2>
+            
+            <div class="video-grid">
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <div class="placeholder" style="padding: 80px 20px;">
+                            <p>Designed Co-Speech Actions</p>
+                            <p style="font-size: 0.85em; margin-top: 10px;">Replace with:<br>&lt;video controls&gt;&lt;source src="videos/demo1.mp4"&gt;&lt;/video&gt;</p>
+                        </div>
+                    </div>
+                    <p class="video-caption">Demo 1: Designed Co-Speech Actions</p>
+                </div>
+
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <div class="placeholder" style="padding: 80px 20px;">
+                            <p>A Glance of CLIO guided tours</p>
+                            <p style="font-size: 0.85em; margin-top: 10px;">Replace with:<br>&lt;video controls&gt;&lt;source src="videos/demo2.mp4"&gt;&lt;/video&gt;</p>
+                        </div>
+                    </div>
+                    <p class="video-caption">Demo 2: A Glance of CLIO guided tours</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Abstract Section -->
+        <!-- <section>
+            <h2>Abstract</h2>
+            <div class="abstract">
+                <p>
+                    A tour guide robot, CLIO, is presented. 
+                    It carries a display as its head and a laser pointer to orient visitors' attention by its head movement and laser pointer. 
+                    Animated eyes are displayed to build eye contact. 
+                    An optional low-code interface based on a Large Language Model is offered to coordinate the designed actions with a given narrative script for exhibition. 
+                    We conducted a user study to evaluate the CLIO system in a mock-up exhibition of historical photographs. 
+                    Feedback was collected from questionnaires and quantitative data from a mobile eye tracker. Experimental result validated that the efficacy of the designed actions in guiding visual attention of the visitors. 
+                    It showed that CLIO achieved an enhanced engagement compared to the Audio-only baseline system.
+                </p>
+            </div>
+        </section> -->
+
+        <!-- Teaser Figure -->
+        <section>
+            <div style="display: flex; gap: 30px; align-items: center;">
+                <div style="flex: 0 0 70%;">
+                    <img src="figures/CLIO_teaser.png" alt="CLIO Teaser" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                </div>
+                <div style="flex: 0 0 30%;">
+                    <p style="font-size: 1em; color: #666; line-height: 1.6;">
+                        <strong>Problem Statement</strong>
+                        While audio guides provide extensive information, it is often hard for visitors to establish connection between specific exhibit details and the verbal descriptions. 
+                        In contrast, human docents establish eye contact and point directly to specific regions while providing contextual explanations. 
+                    </p>
+                    <p style="font-size: 1em; color: #666; line-height: 1.6;">
+                        We present a robotic tour guide, <em>CLIO</em>, named after the muse of history in Greek mythology.
+                        It carries a display as its head and a laser pointer to orient visitors' attention by its head movement and laser pointer. 
+                        Animated eyes are displayed to build eye contact. 
+                        An optional low-code interface based on a Large Language Model is offered to coordinate the designed actions with a given narrative script for exhibition. 
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction Section -->
+        <!-- <section>
+            <h2>Introduction</h2>
+            <p>
+                While audio guides can offer extensive information, it is challenging for visitors to focus on specific exhibit details based only on verbal descriptions. In contrast, human docents offer a markedly different experience; they establish eye contact and point directly to specific regions while providing contextual explanations. The absence of coordinated audio-gestural guidance significantly disrupts visitors' spatial attention and diminishes engagement.
+            </p>
+            <p>
+                Tour guide robots have evolved from safe navigation in populated environments to more socially-aware designs with human-like behaviors such as pointing gestures for enhanced communication. We present CLIO, a robotic tour guide system designed to provide coordinated audio-gestural guidance. The system is equipped with a head component consisting of a camera and LED display showing animated eyes that blink to build eye contact. A laser pointer directs visitors' attention to points of interest, with all behaviors synchronized with audio narration.
+            </p>
+            <p>
+                A user study with 28 participants validated our design choices in a mock-up exhibition. Results from questionnaires and mobile eye tracking data indicate that CLIO is more acceptable than its Audio-only counterpart and effectively directed participants' visual attention while offering more engaging tours.
+            </p>
+            <p>
+                <strong>Main contributions:</strong>
+            </p>
+            <ul style="margin-left: 40px; font-size: 1.1em;">
+                <li>Actions that guide visitors' visual attention and engage them in an exhibition setup</li>
+                <li>An integrated system that generates co-speech actions for audio narration of guided tours</li>
+            </ul>
+        </section> -->
+
+        <!-- Method Section -->
+        <!-- <section>
+            <h2>Method</h2>
+            <p>
+                Our approach consists of three main components: [component 1], [component 2], and [component 3]. 
+                The overall pipeline is illustrated in the figure below.
+            </p>
+            
+            <h3>Architecture Overview</h3>
+            <p>
+                The CLIO architecture leverages [technical details] to achieve [goals]. 
+                Key design decisions include [design choices].
+            </p>
+        </section> -->
+
+        <!-- Hypothesis Section -->
+        <section>
+            <h2>Hypotheses to validate the designed co-speech actions</h2>
+            <p>
+            <strong>H1</strong>: The designed co-speech actions can guide visitors' visual attention in a real-world exhibition set-up.
+            <br>
+            <strong>H2</strong>: Tours with designed actions can enhance the visitor's engagement during the tour. 
+            <br>
+            <strong>H3</strong>: The (arm-less) robotic system with co-speech actions is perceived as natural and intuitive in a tour guide context.
+            </p>
+        </section>
+
+        <!-- Figures Section -->
+        <section>
+            <h2>Experiment Setup</h2>
+            <div style="display: flex; gap: 30px; align-items: end; margin: 30px 0;">
+                <div style="flex: 0 0 70%;">
+                    <img src="figures/experiment_setup.png" alt="Experiment setup for user study evaluation." style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                </div>
+                <div style="flex: 0 0 30%;">
+                    <p style="font-size: 1em; color: #666; line-height: 1.6;">
+                        <strong>Experiment Setup.</strong> 
+                        Given two conditions, Audio-only baseline and CLIO with co-speech actions, we conducted a user study in a mock-up exhibition of historical photographs. 
+                        Each participant experienced both conditions in a within-subject design. 
+                        To avoid familiarity effects, we designed two different routes with different sets of photographs for the two conditions.
+                        (A) shows the two slightly different routes. (B) shows a participant experiencing the tour with CLIO. 
+                        We collected eye gaze data via a mobile eye tracker, shown in (C), during the tour to provide quantitative measurements in addition to the qualitative feedback. 
+                    </p>
+                </div>
+            </div>
+        </section>  
+
+        <section>
+            <h2>Quantitative Analysis through Eye Tracking Data</h2>
+            <p>
+                <strong>We compared eye tracking data between the Audio-only baseline and CLIO with co-speech actions. 
+                </strong> 
+                This comparison exemplifies that the participant's gaze at the CLIO condition better aligned with the mentioned exhibits than that at the Audio-only condition.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0; align-items: end;">
+                <div style="text-align: center;">
+                    <img src="figures/eye_tracking_data_clio.png" alt="Eye Tracking with CLIO condition" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <p class="figure-caption" style="margin-top: 15px;">CLIO with co-speech actions</p>
+                </div>
+                <div style="text-align: center;">
+                    <img src="figures/eye_tracking_data_audio.png" alt="Eye Tracking with Audio-only condition" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <p class="figure-caption" style="margin-top: 15px;">Audio-only baseline</p>
+                </div>
+            </div>
+            <p>
+                The upper block shows the robot actions and the lower block shows the participant's gaze data over time.
+                The lower row block shows where the participant gazed during the tour. 
+                If the gaze coincided with the exhibit being mentioned, green color markers are used. 
+                Otherwise, the gaze at a timestamp is shown in grey.
+                Numbered items in this lower block are the exhibits. 
+                <em>Others</em> indicate no intersection between the gaze and any of the exhibits; 
+                and <em>No pupils</em> indicate the eye gaze could not be computed by the mobile eye tracker.
+                Vertical dashed lines in blue and red respectively mark the start and end of the narration regarding an exhibit.
+            </p>
+
+            <div style="display: flex; gap: 30px; align-items: end; margin: 30px 0;">
+                <div style="flex: 0 0 100%;">
+                    <img src="figures/paraller_tracker_orin2_compress.png" alt="Visual comparison of the eye tracking data" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                </div>
+            </div>
+
+            <p>
+                <strong>Visual comparison of the eye tracking data.</strong> 
+                This visual comparison showcases how the visual attention of a participant is guided by CLIO's co-speech actions compared to the Audio-only baseline. 
+                Participant 14 at different conditions (and thus different tours) is illustrated at the top two rows.
+                Participants 14 and 9 at the same section of the exhibition are illustrated at the bottom two rows, one at the CLIO condition and the other at the Audio-only condition.
+            </p>
+
+        </section>
+
+        <section>
+            <h2>Qualitative Results</h2>
+            <div style="display: flex; gap: 30px; align-items: center; margin: 30px 0;">
+                <div style="flex: 0 0 70%;">
+                    <img src="figures/Combined_CLIO_vs_Audio_Analysis.png" alt="Combined Analysis" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                </div>
+                <div style="flex: 0 0 30%;">
+                    <p style="font-size: 1em; color: #666; line-height: 1.6;">
+                        <strong>Analysis of the Questionnaire Feedback.</strong>
+                        (a) is designed to validate H1 regarding the effectiveness of visual attention guidance. A self-developed questionnaire is used.
+                        (b) and (c) are adopted from XXX to measure Focused Attention and Reward Factor, demonstrating the engagement level.
+                        Subfigures (d-f) are adopted from XXX to measure Animacy, Likeability, and Perceived Intelligence.
+                        5-point Likert scales are used in all questionnaires.
+                        In all scales, we observed statistically significant improvements (p&lt;0.001) in the CLIO condition compared to the Audio-only baseline, supporting our hypotheses.
+                    
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Videos Section -->
+        <section>
+            <h2>Full Video Demo</h2>
+
+            <h3>A CLIO Guided Tour</h3>
+            <div class="video-grid">
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <!-- Example YouTube embed - replace VIDEO_ID with your actual YouTube video ID -->
+                        <!-- <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe> -->
+                        <div class="placeholder" style="padding: 80px 20px;">
+                            <p>YouTube Video</p>
+                            <p style="font-size: 0.85em; margin-top: 10px;">Replace with:<br>&lt;iframe src="https://www.youtube.com/embed/VIDEO_ID"&gt;&lt;/iframe&gt;</p>
+                        </div>
+                    </div>
+                    <p class="video-caption">Full presentation and overview.</p>
+                </div>
+            </div>
+
+            <h3>YouTube Video</h3>
+            <div class="video-grid">
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <!-- Example YouTube embed - replace VIDEO_ID with your actual YouTube video ID -->
+                        <!-- <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe> -->
+                        <div class="placeholder" style="padding: 80px 20px;">
+                            <p>YouTube Video</p>
+                            <p style="font-size: 0.85em; margin-top: 10px;">Replace with:<br>&lt;iframe src="https://www.youtube.com/embed/VIDEO_ID"&gt;&lt;/iframe&gt;</p>
+                        </div>
+                    </div>
+                    <p class="video-caption">Full presentation and overview.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Citation Section -->
+        <section>
+            <h2>Citation</h2>
+            <pre style="background: #f8f9fa; padding: 20px; border-radius: 6px; overflow-x: auto; font-size: 0.9em;">
+            @inproceedings{clio2026,
+            title={CLIO: Coordinate User Visual Attention with Audio Narratives for Enhanced Engagement},
+            author={Chen, Yuxuan and Lo, Ian Leong Ting and Guo, Bao and Kawmali, Netitorn and Chan, Chun Kit and Wang, Ruoyu and Pan, Jia and Yang, Lei},
+            booktitle={Companion Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction},
+            series={HRI Companion '26},
+            year={2026},
+            month={March},
+            address={Edinburgh, Scotland, UK},
+            publisher={ACM},
+            doi={10.1145/3776734.3794565}
+            }</pre>
+        </section>
+
+        <!-- Contact Section -->
+        <section>
+            <h2>Contact</h2>
+            <p>
+                For questions or collaboration opportunities, please contact us at: 
+                <a href="mailto:lyang125@hku.hk" style="color: #667eea;">lyang125@hku.hk</a>
+            </p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 CLIO A Tour Guide Robot. All rights reserved.</p>
+    </footer>
+</body>
+</html>
